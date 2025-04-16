@@ -1,137 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+import java.awt.Color;
+/**
+ * ITSC 1213 Module 12
+ * The Circle class represents a circle with a radius and color.
+ * Includes methods for Circle information and calculation of area.
+ *
+ * @author nanajjar
+ * @version Spring 25
+ */
+public class Circle {  
+    // private instance variable, not accessible from outside this class
+    private double radius;
+    private Color color;
+    private double area;
 
-<head>
-  <meta charset="UTF-8">
-  <title>Hive Docs</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/docsify/lib/themes/vue.css">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://i.ytimg.com">
-  <link rel="preconnect" href="https://i9.ytimg.com">
-  <link rel="preconnect" href="https://s.ytimg.com">
-  <style type="text/css">
-    .container {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%;
+    /** 
+    * The default constructor creating a Circle with default values of radius 1.0 and orange color.
+    */
+    public Circle() {
+        radius = 1.0;
+        this.color = new Color(255,119,65);
     }
 
-    .video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
-</head>
+    /** 
+    * Creates Circle with specific radius and color
+    *
+    * @param r for circle's radius
+    * @param clr for circle's color
+    */
 
-<body>
-  <div id="app"></div>
-  <script src="https://unpkg.com/docsify-edit-on-github/index.js"></script>
-  <script>
-    window.$docsify = {
-      name: 'Hive Documentation',
-      loadSidebar: true,
-      loadNavbar: true,
-      subMaxLevel: 2,
-      auto2top: true,
-      homepage: 'home.md',
-      themeColor: '#0AC7EF',
-      notFoundPage: true,
-      logo: 'assets/logo.svg',
-      ga: 'UA-148376435-1',
-      pagination: {
-        crossChapter: true
-      },
-      plugins: [
-        EditOnGithubPlugin.create('https://github.com/hivedb/docs/tree/master/', undefined, 'Edit on GitHub'),
-        function (hook) {
-          var iframes = {};
-          hook.beforeEach(function (content) {
-            iframes = {};
-            return content.replace(/^```dart:(dart|flutter):([0-9]{1,3})px([^\x05]*?)```/mg, function (m, type, height, code) {
-              var id = Math.random().toString(36).substr(2, 9);
-              iframes[id] = code.trim();
-              return `<iframe style="width:100%;height:${height}px;" data-src="https://dartpad.hivedb.dev/embed-${type}.html" id="${id}" data-hj-allow-iframe></iframe>`;
-            });
-          });
-          hook.doneEach(function () {
-            for (let [id, code] of Object.entries(iframes)) {
-              var iframe = document.getElementById(id);
-              iframe.setAttribute('src', iframe.getAttribute('data-src'));
-              iframe.onload = function () {
-                iframe.contentWindow.postMessage({ 'sourceCode': { 'main.dart': code }, 'type': 'sourceCode' }, '*');
-              };
-            }
-          });
-        },
-        function (hook) {
-          var codes = {};
-          hook.beforeEach(function (content) {
-            return content.replace(/^```version[^\x05]*?```/mg, function (m) {
-              if (hiveDependencies !== undefined) {
-                return '```yaml\n' + hiveDependencies + '\n```';
-              } else {
-                return '<pre data-lang="yaml" id="hiveDependencies"></pre>';
-              }
-            });
-          });
-        }
-      ]
+    public Circle(double r, Color clr) {
+        radius = r;
+        color = clr;
     }
 
-    window.clearIndexedDb = function () {
-      var i = document.createElement('iframe');
-      i.style.visibility = 'hidden';
-      i.onload = function () { i.parentNode.removeChild(i); };
-      i.src = 'https://dartpad.hivedb.dev/clear-indexeddb.html';
-      i.onload = function () {
-        location.reload();
-      }
-      document.body.appendChild(i);
+    /**
+     * Returns circle's radius
+     * @return radius of the circle
+     */
+    public double getRadius() {
+        return radius;
     }
 
-    window.hj = function () { (h.hj.q = h.hj.q || []).push(arguments) };
-    window._hjSettings = { hjid: 1654615, hjsv: 6 };
-
-    var hiveDependencies;
-    async function load() {
-      var url = 'https://api.allorigins.win/get?url=https://pub.dev/api/packages/'
-      var packages = ['hive', 'hive_flutter', 'hive_generator', 'build_runner']
-      Promise.all(packages.map(p => fetch(url + p))).then(responses =>
-        Promise.all(responses.map(res => res.json()))
-      ).then(json => {
-        var versions = json.map((j) => JSON.parse(j.contents)['latest']['version']);
-        hiveDependencies = `dependencies:
-  hive: ^${versions[0]}
-  hive_flutter: ^${versions[1]}
-
-dev_dependencies:
-  hive_generator: ^${versions[2]}
-  build_runner: ^${versions[3]}
-`;
-        var dependencyElement = document.getElementById('hiveDependencies');
-        if (dependencyElement !== null) {
-          var highlighted = Prism.highlight(hiveDependencies, Prism.languages.yaml, 'yaml');
-          dependencyElement.innerHTML = `<code class="language-yaml">${highlighted}</code>` + dependencyElement.innerHTML;
-        }
-      })
+    /**
+     * Returns circle's color
+     * @return color of the circle
+     */
+    public Color getColor() {
+        return color;
     }
-    load();
-  </script>
-  <script src="https://unpkg.com/docsify/lib/docsify.min.js"></script>
-  <script src="https://unpkg.com/docsify/lib/plugins/ga.min.js"></script>
-  <script src="https://unpkg.com/docsify/lib/plugins/search.min.js"></script>
-  <script src="https://unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="https://unpkg.com/docsify-copy-code@2"></script>
-  <script src="https://unpkg.com/prismjs/components/prism-dart.min.js"></script>
-  <script src="https://unpkg.com/prismjs/components/prism-yaml.min.js"></script>
-  <script src="https://static.hotjar.com/c/hotjar-1654615.js?sv=6"></script>
-</body>
+
+    /**
+     * Calculates and Returns circle's area
+     * @return area of the circle
+     */
+    public double getArea() {
+        calculateArea();
+        return area;
+    }
+    /** 
+     * Private method to calculate area of the circle 
+     * Sets answer equal to area variable
+     */
+    private void calculateArea() {
+        area = radius * radius * Math.PI;
+    }
+}
